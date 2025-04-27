@@ -12,7 +12,7 @@ _rake = Rake()
 DB_PATH: str = "db"
 
 
-def get_code_chunks_table() -> lancedb.Table:
+def get_code_chunks_table() -> lancedb.table:
     """Connect to LanceDB using the configured path and return the 'code_chunks' table."""
     db = lancedb.connect(DB_PATH)
     table = db.open_table("code_chunks")
@@ -28,7 +28,7 @@ class ContinueQuery(BaseModel):
 @app.post("/retrieve", response_model=list[dict])
 async def retrieve(
     payload: ContinueQuery,
-    table: lancedb.Table = Depends(get_code_chunks_table),
+    table: lancedb.table = Depends(get_code_chunks_table),
 ) -> list[dict]:
     """
     Extract keywords from `fullInput` (or fall back to `query`),
